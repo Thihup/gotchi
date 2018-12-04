@@ -7,19 +7,56 @@ import {
 } from 'react-native';
 import { CharHeader } from '../components/CharHeader';
 import SkillBar from '../components/SkillBar';
-import { Character as CharacterObject } from '../modules/character';
+import Api from '../utils/api';
 
-export interface CharacterProps {
-  character: CharacterObject,
+export interface CharacterObject {
+    name: string,
+    image: string,
+    strength: number,
+    defense: number,
+    agility: number,
+    intelligence: number,
 }
 
-export default class Character extends React.Component<CharacterProps, {}> {
+interface CharacterState {
+    character: CharacterObject,
+}
+
+export interface CharacterProps {
+  navigation: any
+}
+
+export default class Character extends React.Component<CharacterProps, CharacterState> {
   static navigationOptions = {
     title: 'Character Status'
+  };
+
+  constructor(props) {
+      super(props);
+      this.state = {
+          character:
+              {
+                  name: "",
+                  image: "",
+                  strength: 0,
+                  defense: 0,
+                  agility: 0,
+                  intelligence: 0
+              }
+      }
   }
 
-  render() {
-    const { character } = this.props;
+  componentDidMount(): void {
+    const { token } = this.props.navigation.getParam("data");
+    Api.request("character", token).then((character: CharacterObject) => {
+        this.setState({character});
+    }).catch((error) => {
+        console.error(error);
+    });
+  }
+
+  render(): React.ReactNode {
+    const { character } = this.state;
     return (
       <View style={styles.container}>
         <CharHeader

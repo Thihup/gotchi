@@ -1,5 +1,5 @@
 // Define the api url
-const API_BASE_URL = 'https://www.mocky.io/v2/5b3c14ea330000fd26599e55';
+const API_BASE_URL = 'http://localhost:3000';
 
 const Api = {
   header: {
@@ -46,7 +46,7 @@ const Api = {
   request(endpoint, jwt) {
     return fetch(`${API_BASE_URL}/secured/${endpoint}`, {
       method: 'GET',
-      headers: this.header.secureheader(jwt),
+      headers: this.header.secure(jwt),
     })
     .then(this.checkStatus)
     .then(this.getJsonContent);
@@ -54,7 +54,7 @@ const Api = {
 
   create(endpoint, jwt, data, method = 'POST') {
     return fetch(`${API_BASE_URL}/secured/${endpoint}`, {
-      headers: this.header.secureheader(jwt),
+      headers: this.header.secure(jwt),
       method,
       body: JSON.stringify(data),
     })
@@ -64,7 +64,7 @@ const Api = {
 
   delete(endpoint, jwt, id, method = 'DELETE') {
     return fetch(`${API_BASE_URL}/secured/${endpoint}/${id}`, {
-      headers: this.header.secureheader(jwt),
+      headers: this.header.secure(jwt),
       method,
     })
     .then(this.checkStatus)

@@ -11,9 +11,8 @@ import Api from '../utils/api';
 const logo = require('../../temporary.png');
 
 interface LoginResponse {
-  user: string,
-  jwt: string,
-  name: string,
+  id: number,
+  token: string
 }
 
 // TODO - Search how to type navigation object properties.
@@ -36,7 +35,7 @@ class Login extends React.PureComponent<Props, State> {
     username: '',
     password: '',
     loading: false
-  }
+  };
 
   handleUsername = (username: string) => this.setState({ username })
   handlePassword = (password: string) => this.setState({ password })
@@ -48,14 +47,17 @@ class Login extends React.PureComponent<Props, State> {
      * To work right:
      * Api.insecure_request('auth/signin', { ...userData }, 'POST').then(... => goToHome);
      */
-    Api.insecure_request('').then((data: LoginResponse) => {
-      this.setState({ loading: false });
-      this.props.navigation.navigate('Home');
+    Api.insecure_request('auth/signin', {
+        username: this.state.username,
+        password: this.state.password
+    }, 'POST').then((data: LoginResponse) => {
+        this.setState({loading: false});
+        this.props.navigation.navigate('Home', {data});
     }).catch(error => {
-      // Call Toast to show message to the user.
-      // Shows the error message
-      this.setState({ loading: false });
-      console.error(error);
+        // Call Toast to show message to the user.
+        // Shows the error message
+        this.setState({loading: false});
+        console.error(error);
     });
   }
 
