@@ -24,6 +24,7 @@ const babelLoaderConfiguration = {
     path.resolve(appDirectory, 'node_modules/react-native-easy-grid'),
     path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
     path.resolve(appDirectory, 'node_modules/react-native-drawer'),
+      path.resolve(appDirectory, 'node_modules/react-native-flash-message'),
   ],
   use: {
     loader: 'babel-loader',

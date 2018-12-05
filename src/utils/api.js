@@ -10,7 +10,7 @@ const Api = {
         'Content-type': 'application/json',
       };
     },
-  
+
     insecure() {
       return {
         Accept: 'application/json',
@@ -19,12 +19,12 @@ const Api = {
     },
   },
 
-  checkStatus(response) {
+    async checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {
       return response;
     }
-    // eslint-disable-next-line no-underscore-dangle
-    const message = JSON.parse(response._bodyText).error;
+        const json = await response.json();
+        const message = json.error;
     throw new Error(message);
   },
 
@@ -86,7 +86,7 @@ const Api = {
           }
         }
       };
-      xhr.send({ uri: file });
+        xhr.send({uri: file});
     });
   },
 };

@@ -4,17 +4,16 @@
  */
 
 import * as React from 'react';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
+import {StyleSheet, View,} from 'react-native';
 import Router from './routes/index';
+import FlashMessage from 'react-native-flash-message';
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Router />
+          <Router/>
+          <FlashMessage position="top"/>
       </View>
     );
   }

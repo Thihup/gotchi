@@ -1,25 +1,20 @@
 import * as React from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-} from 'react-native';
+import { ScrollView, StyleSheet, Text, View, } from 'react-native';
 import { CharHeader } from '../components/CharHeader';
 import SkillBar from '../components/SkillBar';
 import Api from '../utils/api';
 
 export interface CharacterObject {
-    name: string,
-    image: string,
-    strength: number,
-    defense: number,
-    agility: number,
-    intelligence: number,
+  name: string,
+  image: string,
+  strength: number,
+  defense: number,
+  agility: number,
+  intelligence: number,
 }
 
 interface CharacterState {
-    character: CharacterObject,
+  character: CharacterObject,
 }
 
 export interface CharacterProps {
@@ -32,31 +27,31 @@ export default class Character extends React.Component<CharacterProps, Character
   };
 
   constructor(props) {
-      super(props);
-      this.state = {
-          character:
-              {
-                  name: "",
-                  image: "",
-                  strength: 0,
-                  defense: 0,
-                  agility: 0,
-                  intelligence: 0
-              }
-      }
+    super(props);
+    this.state = {
+      character:
+        {
+          name: "",
+          image: "",
+          strength: 0,
+          defense: 0,
+          agility: 0,
+          intelligence: 0
+        }
+    }
   }
 
   componentDidMount(): void {
-    const { token } = this.props.navigation.getParam("data");
+    const {token} = this.props.navigation.getParam("data");
     Api.request("character", token).then((character: CharacterObject) => {
-        this.setState({character});
+      this.setState({character});
     }).catch((error) => {
-        console.error(error);
+      console.error(error);
     });
   }
 
   render(): React.ReactNode {
-    const { character } = this.state;
+    const {character} = this.state;
     return (
       <View style={styles.container}>
         <CharHeader
@@ -133,7 +128,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     padding: 10,
   },
-  skillsContentBox: { flex: 10 },
+  skillsContentBox: {flex: 10},
   skillScroll: {
     flex: 1,
     flexDirection: 'row',

@@ -1,15 +1,9 @@
 import * as React from 'react';
-import { Image, StyleSheet, Text, View, } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button, Form, Input, Item, Label } from 'native-base';
 import Api from '../utils/api';
 import { NavigationScreenProp } from 'react-navigation';
 import { showMessage } from 'react-native-flash-message';
-
-const logo = require('../../temporary.png');
-
-interface LoginResponse {
-  token: string
-}
 
 interface Navigation {
   navigate: NavigationScreenProp<any, any>,
@@ -21,49 +15,51 @@ interface Props {
 
 interface State {
   username: string,
-  password: string,
-  loading: boolean,
+  password: string
 }
 
-class Login extends React.PureComponent<Props, State> {
-  state = {
-    username: '',
-    password: '',
-    loading: false
-  };
+class Register extends React.PureComponent<Props, State> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+      password: ''
+    };
+
+  }
 
   handleUsername = (username: string) => this.setState({username});
   handlePassword = (password: string) => this.setState({password});
 
-  onLogin = () => {
-    this.setState({loading: true});
-    Api.insecure_request('auth/signin', {
+  onRegister = () => {
+    Api.insecure_request('auth/signup', {
       username: this.state.username,
       password: this.state.password
-    }, 'POST').then((data: LoginResponse) => {
-      this.setState({loading: false});
-      this.props.navigation.navigate('Home', {data});
-    }).catch(error => {
-      this.setState({loading: false});
+    }, 'POST').then(() => {
+      this.props.navigation.navigate('Login');
       showMessage({
-        message: "Error",
+        message: "Success",
+        description: "You may now sign in",
+        type: "success",
+      });
+    }).catch(error => {
+      showMessage({
+        message: "Something bad happened",
         description: error.message,
         type: "danger",
       });
     });
   };
 
-  render() {
-    const {
-      username,
-      password,
-      loading
-    } = this.state;
+  render(): React.ReactNode {
+
+    const {username, password} = this.state;
+
     return (
       <View style={styles.container}>
         <Form style={styles.loginContainer}>
-          <Image style={styles.logo} source={logo}/>
-          <Text style={styles.title}>Login</Text>
+          <Text style={styles.title}>Register</Text>
           <Item inlineLabel>
             <Label>Username</Label>
             <Input
@@ -85,32 +81,18 @@ class Login extends React.PureComponent<Props, State> {
           </Item>
           <View style={styles.buttonContainer}>
             <Button
-              onPress={this.onLogin}
+              onPress={this.onRegister}
               block
               light
-              disabled={loading}
             >
               <Text style={styles.buttonText}>
-                Sign in
+                Sign up
               </Text>
             </Button>
           </View>
         </Form>
-        <Button
-          onPress={this.onRegister}
-          block
-          light
-        >
-          <Text style={styles.buttonText}>
-            Sign up
-          </Text>
-        </Button>
       </View>
-    );
-  }
-
-  onRegister = () => {
-    this.props.navigation.navigate('Register');
+    )
   }
 }
 
@@ -150,4 +132,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Login;
+
+export default Register;
